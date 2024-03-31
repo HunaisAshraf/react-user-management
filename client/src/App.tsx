@@ -1,31 +1,18 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Error from "./pages/Error";
-import SignUp from "./pages/SignUp";
+import Navbar from "./components/Navbar";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "*",
-    element: <Error />,
-  },
-]);
+// type Element = {
+//   children: JSX.Element;
+// };
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 }
 
 export default App;

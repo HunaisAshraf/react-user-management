@@ -4,10 +4,15 @@ import axios from "axios";
 import { API_URl } from "../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/userSlice";
+// import store from "../redux/store";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const dispatch = useDispatch();
 
   let navigate = useNavigate();
 
@@ -19,7 +24,8 @@ const Login = () => {
         password,
       });
       if (data.success) {
-        navigate("/");
+        dispatch(addUser({ user: data.user, token: data.token }));
+        navigate("/home");
       } else {
         toast.error(data.message);
       }

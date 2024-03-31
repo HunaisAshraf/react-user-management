@@ -1,10 +1,9 @@
-import React from "react";
 import { ReactSetState } from "../utils/type";
 
 type Input = {
   type: "text" | "email" | "number" | "password";
   inputValue: string;
-  setInputValue: ReactSetState;
+  setInputValue: ReactSetState | (() => void);
   placeHolder: string;
 };
 
@@ -17,6 +16,7 @@ const Input = ({ type, inputValue, setInputValue, placeHolder }: Input) => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder={placeHolder}
+        required
       />
     </div>
   );

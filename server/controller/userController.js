@@ -4,7 +4,7 @@ const { hashPassword, comparePassword } = require("../helpers/helper");
 
 const getUserController = async (req, res) => {
   try {
-    const users = await db.pool.query("select * from users");
+    const users = await db.pool.query("select * from users where role <> 1");
     return res.status(200).send(users.rows);
   } catch (error) {
     console.log(error);
@@ -18,6 +18,7 @@ const getUserController = async (req, res) => {
 const userSignUpController = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
+    console.log(req.body);
 
     if (!name || !email || !phone || !password) {
       return res.status(400).json({
@@ -29,8 +30,6 @@ const userSignUpController = async (req, res) => {
     const exist = await db.pool.query("SELECT * FROM users where email = $1;", [
       email,
     ]);
-
-    console.log(exist.rowCount);
 
     if (exist.rowCount) {
       return res.status(400).json({
@@ -62,7 +61,6 @@ const userSignUpController = async (req, res) => {
 
 const userLoginController = async (req, res) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
 
     const user = await db.pool.query("SELECT * FROM users where email = $1;", [
