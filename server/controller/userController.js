@@ -84,9 +84,13 @@ const userLoginController = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "7h",
-    });
+    const token = jwt.sign(
+      { id: user.rows[0].id, role: user.rows[0].role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7h",
+      }
+    );
     return res.status(200).json({
       success: true,
       message: "user login successfull",
@@ -106,7 +110,7 @@ const userLoginController = async (req, res) => {
 
 const addImageController = async (req, res) => {
   try {
-    const id = Number(req.body.id);
+    const id = req.user.id;
     const image = req.file.filename;
 
     const imageExist = await db.pool.query(
@@ -116,21 +120,23 @@ const addImageController = async (req, res) => {
 
     if (imageExist.rows.length === 0) {
       const img = await db.pool.query(
-        "INSERT INTO image (userid,img) VALUES($1,$2);",
+        "INSERT INTO image (userid,img) VALUES($1,$2) RETURNING *;",
         [id, image]
       );
       res.status(200).json({
         success: true,
         message: "Image added successfully",
+        image: img.rows[0].img,
       });
     }
     const img = await db.pool.query(
-      "UPDATE image SET img = $1 WHERE userid = $2;",
+      "UPDATE image SET img = $1 WHERE userid = $2 RETURNING *;",
       [image, id]
     );
     res.status(200).json({
       success: true,
       message: "Image added successfully",
+      image: img.rows[0].img,
     });
   } catch (error) {
     console.log(error);
@@ -141,9 +147,25 @@ const addImageController = async (req, res) => {
   }
 };
 
+const getImgController = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const data = await db.pool.query("SELECT * FROM image WHERE userid = $1;", [
+      id,
+    ]);
+    res.status(200).json({
+      success: true,
+      image: data.rows[0].img,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getUserController,
   userSignUpController,
   userLoginController,
   addImageController,
+  getImgController,
 };

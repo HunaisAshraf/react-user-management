@@ -31,7 +31,7 @@ const Login = () => {
           token: data?.token,
         };
 
-          console.log(user)
+          // console.log(user)
         dispatch(login(user));
         localStorage.setItem("auth", JSON.stringify(user));
         navigate("/home");
@@ -50,7 +50,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="h-[80vh] flex justify-center items-center">
+    <div className="min-h-[80vh] flex justify-center items-center">
       <Toaster />
       <form
         className="border-2 border-solid rounded p-3"

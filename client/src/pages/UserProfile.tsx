@@ -1,17 +1,19 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef } from "react";
 import Button from "../components/Button";
 import { FaUserCircle } from "react-icons/fa";
 import axios from "axios";
 import { API_URl } from "../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
+import { updateImg } from "../redux/userSlice";
 
 const UserProfile = () => {
-  const [image, setImage] = useState<File | null>(null);
   const user = useSelector((state: RootState) => state.user.user);
-
+  const img = useSelector((state: RootState) => state.user.userImg);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -21,8 +23,6 @@ const UserProfile = () => {
     try {
       const file = e.target.files?.[0];
       if (file) {
-        setImage(file);
-
         const id = String(user?.id);
         const formData = new FormData();
         formData.append("id", id);
@@ -31,11 +31,14 @@ const UserProfile = () => {
         const { data } = await axios.post(`${API_URl}user/add-img`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `${user?.token}`,
           },
         });
 
-        if (data.success) {
-          toast.success(data.message);
+        if (data?.success) {
+          toast.success(data?.message);
+          dispatch(updateImg(data?.image));
+          localStorage.setItem("userImg", data?.img);
         } else {
           toast.error("failed to add image");
         }
@@ -57,9 +60,9 @@ const UserProfile = () => {
         <div>
           <>
             <Button onClick={handleClick} className="rounded-full">
-              {image ? (
+              {img ? (
                 <img
-                  src={URL.createObjectURL(image)}
+                  src={`http://localhost:3000/uploads/${img}`}
                   alt=""
                   className="h-36 w-36 rounded-full"
                 />

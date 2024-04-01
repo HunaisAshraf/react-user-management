@@ -7,7 +7,9 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.user.user);
+  const img = useSelector((state: RootState) => state.user.userImg);
   const dispatch = useDispatch();
+  console.log(img);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -16,7 +18,9 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center px-8 py-4 shadow-md ">
       <div className="">
-        <h1 className="text-3xl font-semibold">AECH</h1>
+        <Link to="/home" className="text-3xl font-semibold">
+          AECH
+        </Link>
       </div>
       <div className="flex items-center gap-3">
         {user && (
@@ -24,7 +28,17 @@ const Navbar = () => {
             <Link to="/profile">
               <p>{user?.name}</p>
             </Link>
-            <FaUserCircle size={30} />
+            <Link to="/profile">
+              {img ? (
+                <img
+                  src={`http://localhost:3000/uploads/${img}`}
+                  alt="user-img"
+                  className="h-10 w-10 rounded-full"
+                />
+              ) : (
+                <FaUserCircle size={30} />
+              )}
+            </Link>
             <Button onClick={handleLogout}>LogOut</Button>
           </>
         )}
