@@ -50,7 +50,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-[80vh] flex justify-center items-center">
       <Toaster />
       <form
         className="border-2 border-solid rounded p-3"

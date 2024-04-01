@@ -18,7 +18,6 @@ const getUserController = async (req, res) => {
 const userSignUpController = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
-    console.log(req.body);
 
     if (!name || !email || !phone || !password) {
       return res.status(400).json({
@@ -92,6 +91,7 @@ const userLoginController = async (req, res) => {
       success: true,
       message: "user login successfull",
       user: {
+        id: user.rows[0].id,
         name: user.rows[0].name,
         email: user.rows[0].email,
         phone: user.rows[0].phone,
@@ -104,8 +104,46 @@ const userLoginController = async (req, res) => {
   }
 };
 
+const addImageController = async (req, res) => {
+  try {
+    const id = Number(req.body.id);
+    const image = req.file.filename;
+
+    const imageExist = await db.pool.query(
+      "select * from image where userid = $1;",
+      [id]
+    );
+
+    if (imageExist.rows.length === 0) {
+      const img = await db.pool.query(
+        "INSERT INTO image (userid,img) VALUES($1,$2);",
+        [id, image]
+      );
+      res.status(200).json({
+        success: true,
+        message: "Image added successfully",
+      });
+    }
+    const img = await db.pool.query(
+      "UPDATE image SET img = $1 WHERE userid = $2;",
+      [image, id]
+    );
+    res.status(200).json({
+      success: true,
+      message: "Image added successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "failed to add image",
+    });
+  }
+};
+
 module.exports = {
   getUserController,
   userSignUpController,
   userLoginController,
+  addImageController,
 };

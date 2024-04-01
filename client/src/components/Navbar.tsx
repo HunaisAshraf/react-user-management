@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center px-8 py-4 shadow-md">
+    <nav className="flex justify-between items-center px-8 py-4 shadow-md ">
       <div className="">
         <h1 className="text-3xl font-semibold">AECH</h1>
       </div>
