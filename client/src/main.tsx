@@ -10,7 +10,8 @@ import Home from "./pages/Home.tsx";
 import UserProfile from "./pages/UserProfile.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import { Provider } from "react-redux";
-import store from "./redux/store.ts";
+import { store } from "./redux/store.ts";
+import ProtectedRoute from "./pages/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,15 +29,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/home",
-        element: <Home />,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: "/user-profile",
-        element: <UserProfile />,
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/admin-dashboard",
-        element: <AdminDashboard />,
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

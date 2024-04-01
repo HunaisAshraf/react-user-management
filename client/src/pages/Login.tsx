@@ -1,16 +1,18 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Input from "../components/Input";
 import axios from "axios";
 import { API_URl } from "../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addUser } from "../redux/userSlice";
-// import store from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/userSlice";
+import { RootState } from "../redux/store";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  let user = useSelector((state: RootState) => state.user.user);
 
   const dispatch = useDispatch();
 
@@ -24,7 +26,14 @@ const Login = () => {
         password,
       });
       if (data.success) {
-        dispatch(addUser({ user: data.user, token: data.token }));
+        let user = {
+          ...data.user,
+          token: data?.token,
+        };
+
+          console.log(user)
+        dispatch(login(user));
+        localStorage.setItem("auth", JSON.stringify(user));
         navigate("/home");
       } else {
         toast.error(data.message);
@@ -33,6 +42,12 @@ const Login = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (user?.token) {
+      navigate("/home");
+    }
+  }, []);
 
   return (
     <div className="h-screen flex justify-center items-center">

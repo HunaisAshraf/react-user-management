@@ -1,9 +1,11 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import Input from "../components/Input";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { API_URl } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const SignUp = () => {
   const [name, setName] = useState<string>("");
@@ -11,6 +13,8 @@ const SignUp = () => {
   const [phone, setPhone] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPasword] = useState<string>("");
+
+  const user = useSelector((state: RootState) => state.user.user);
 
   const navigate = useNavigate();
 
@@ -39,6 +43,12 @@ const SignUp = () => {
       toast.error("somethig went wrong");
     }
   };
+
+  useEffect(() => {
+    if (user?.token) {
+      navigate("/home", { replace: true });
+    }
+  }, []);
 
   return (
     <div className="h-screen flex justify-center items-center">
