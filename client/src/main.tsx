@@ -4,14 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Error from "./pages/Error.tsx";
-import Login from "./pages/Login.tsx";
-import SignUp from "./pages/SignUp.tsx";
-import Home from "./pages/Home.tsx";
-import UserProfile from "./pages/UserProfile.tsx";
-import AdminDashboard from "./pages/AdminDashboard.tsx";
+import Login from "./pages/user/Login.tsx";
+import SignUp from "./pages/user/SignUp.tsx";
+import Home from "./pages/user/Home.tsx";
+import UserProfile from "./pages/user/UserProfile.tsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
-import ProtectedRoute from "./pages/ProtectedRoute.tsx";
+import ProtectedRoute from "./pages/user/ProtectedRoute.tsx";
+import AdminLogin from "./pages/admin/AdminLogin.tsx";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,19 @@ const router = createBrowserRouter([
             <AdminDashboard />
           </ProtectedRoute>
         ),
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    children: [
+      {
+        path: "login",
+        element: <AdminLogin />,
+      },
+      {
+        path: "dashboard",
+        element: <AdminDashboard />,
       },
     ],
   },

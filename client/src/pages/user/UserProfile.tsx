@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState } from "../../redux/store";
 import { ChangeEvent, useRef } from "react";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { FaUserCircle } from "react-icons/fa";
 import axios from "axios";
-import { API_URl } from "../utils/constants";
+import { API_URl } from "../../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
-import { updateImg } from "../redux/userSlice";
+import { updateImg } from "../../redux/userSlice";
 
 const UserProfile = () => {
   const user = useSelector((state: RootState) => state.user.user);

@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState } from "../../redux/store";
 import axios from "axios";
-import { API_URl } from "../utils/constants";
+import { API_URl } from "../../utils/constants";
 import { useEffect } from "react";
-import { updateImg } from "../redux/userSlice";
+import { updateImg } from "../../redux/userSlice";
 
 const Home = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const userImg = useSelector((state: RootState) => state.user.userImg);
 
   const dispatch = useDispatch();
 

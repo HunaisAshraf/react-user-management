@@ -1,12 +1,12 @@
 import  { FormEvent, useEffect, useState } from "react";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { API_URl } from "../utils/constants";
+import { API_URl } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { login } from "../redux/userSlice";
+import { RootState } from "../../redux/store";
+import { login } from "../../redux/userSlice";
 
 const SignUp = () => {
   const [name, setName] = useState<string>("");
@@ -61,7 +61,7 @@ const SignUp = () => {
   }, []);
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="min-h-[80vh] flex justify-center items-center">
       <Toaster />
       <form
         className="border-2 border-solid rounded py-3 px-6"

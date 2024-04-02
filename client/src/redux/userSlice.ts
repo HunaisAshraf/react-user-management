@@ -1,17 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  token: string;
-};
-
-type AuthData = {
-  user: User | null;
-  userImg: string;
-};
+import { AuthData } from "../utils/type";
 
 const initialState: AuthData = {
   user: localStorage.getItem("auth")

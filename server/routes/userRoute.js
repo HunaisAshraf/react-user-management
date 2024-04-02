@@ -1,5 +1,5 @@
 const express = require("express");
-const upload = require("../helper/multer");
+const upload = require("../helpers/multer");
 const {
   getUserController,
   userSignUpController,
@@ -19,6 +19,6 @@ router.post(
   upload.single("image"),
   addImageController
 );
-router.get("/get-img",requireSignIn,getImgController)
+router.get("/get-img", requireSignIn, getImgController);
 
 module.exports = router;
