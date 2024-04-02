@@ -1,4 +1,4 @@
-import  { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Input from "../../components/Input";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
@@ -6,7 +6,6 @@ import { API_URl } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { login } from "../../redux/userSlice";
 
 const SignUp = () => {
   const [name, setName] = useState<string>("");
@@ -18,8 +17,6 @@ const SignUp = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const handleSubmit = async (e: FormEvent) => {
     try {
@@ -37,13 +34,6 @@ const SignUp = () => {
       });
 
       if (data.success) {
-        let user = {
-          ...data.user,
-          token: data?.token,
-        };
-
-        dispatch(login(user));
-        localStorage.setItem("auth", JSON.stringify(user));
         navigate("/home");
       } else {
         toast.error(data.message);

@@ -6,11 +6,10 @@ import { FaUserCircle } from "react-icons/fa";
 import axios from "axios";
 import { API_URl } from "../../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
-import { updateImg } from "../../redux/userSlice";
+import { updateUser } from "../../redux/userSlice";
 
 const UserProfile = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const img = useSelector((state: RootState) => state.user.userImg);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
@@ -34,11 +33,15 @@ const UserProfile = () => {
             Authorization: `${user?.token}`,
           },
         });
-
+        console.log(data);
         if (data?.success) {
           toast.success(data?.message);
-          dispatch(updateImg(data?.image));
-          localStorage.setItem("userImg", data?.img);
+          dispatch(
+            updateUser({
+              ...data?.user,
+              token: user?.token,
+            })
+          );
         } else {
           toast.error("failed to add image");
         }
@@ -60,10 +63,10 @@ const UserProfile = () => {
         <div>
           <>
             <Button onClick={handleClick} className="rounded-full">
-              {img ? (
+              {user?.img ? (
                 <img
-                  src={`http://localhost:3000/uploads/${img}`}
-                  alt=""
+                  src={`http://localhost:3000/uploads/${user?.img}`}
+                  alt={user.name}
                   className="h-36 w-36 rounded-full"
                 />
               ) : (

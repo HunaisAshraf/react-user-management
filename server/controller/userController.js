@@ -91,6 +91,7 @@ const userLoginController = async (req, res) => {
         expiresIn: "7h",
       }
     );
+
     return res.status(200).json({
       success: true,
       message: "user login successfull",
@@ -99,6 +100,7 @@ const userLoginController = async (req, res) => {
         name: user.rows[0].name,
         email: user.rows[0].email,
         phone: user.rows[0].phone,
+        img: user.rows[0].img,
         role: user.rows[0].role,
       },
       token,
@@ -113,34 +115,21 @@ const addImageController = async (req, res) => {
     const id = req.user.id;
     const image = req.file.filename;
 
-    const imageExist = await db.pool.query(
-      "select * from image where userid = $1;",
-      [id]
-    );
-
-    if (imageExist.rows.length === 0) {
-      const img = await db.pool.query(
-        "INSERT INTO image (userid,img) VALUES($1,$2) RETURNING *;",
-        [id, image]
-      );
-      res.status(200).json({
-        success: true,
-        message: "Image added successfully",
-        image: img.rows[0].img,
-      });
-    }
-    const img = await db.pool.query(
-      "UPDATE image SET img = $1 WHERE userid = $2 RETURNING *;",
+    const user = await db.pool.query(
+      "UPDATE users SET img = $1 WHERE id = $2 RETURNING *;",
       [image, id]
     );
-    res.status(200).json({
+
+    user.rows[0].password = undefined;
+
+    return res.status(200).json({
       success: true,
       message: "Image added successfully",
-      image: img.rows[0].img,
+      user: user.rows[0],
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "failed to add image",
     });
@@ -169,3 +158,27 @@ module.exports = {
   addImageController,
   getImgController,
 };
+
+// console.log(user);
+// const imageExist = await db.pool.query(
+//   "select * from image where userid = $1;",
+//   [id]
+// );
+
+// if (imageExist.rows.length === 0) {
+//   const img = await db.pool.query(
+//     "INSERT INTO image (userid,img) VALUES($1,$2) RETURNING *;",
+//     [id, image]
+//   );
+//   console.log("insert ", img);
+//   return res.status(200).json({
+//     success: true,
+//     message: "Image added successfully",
+//     image: img.rows[0].img,
+//   });
+// }
+// const img = await db.pool.query(
+//   "UPDATE image SET img = $1 WHERE userid = $2 RETURNING *;",
+//   [image, id]
+// );
+// console.log("upddate ", img);

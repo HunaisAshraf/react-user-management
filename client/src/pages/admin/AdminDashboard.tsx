@@ -1,10 +1,109 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { API_URl } from "../../utils/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import toast from "react-hot-toast";
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+};
 
 const AdminDashboard = () => {
-  return (
-    <>
-        <h1>hello</h1>
-    </>
-  )
-}
+  const [users, setUsers] = useState<User[]>([]);
 
-export default AdminDashboard
+  const admin = useSelector((state: RootState) => state.admin.admin);
+
+  const getAllUser = async () => {
+    try {
+      const { data } = await axios.get(`${API_URl}admin/get-users`, {
+        headers: {
+          Authorization: `${admin?.token}`,
+        },
+      });
+      setUsers(data.users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const { data } = await axios.delete(`${API_URl}admin/delete-user/${id}`, {
+        headers: {
+          Authorization: `${admin?.token}`,
+        },
+      });
+
+      if (data?.success) {
+        getAllUser();
+        toast.success(data?.message);
+      } else {
+        toast.error("failed to delete user");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleEdit = () => {};
+
+  useEffect(() => {
+    getAllUser();
+  }, []);
+
+  return (
+    <div className="min-h-screen flex justify-center">
+      <div className="relative overflow-x-auto w-[80%]">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-600 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Email
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Phone
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users?.map((user) => (
+              <tr
+                key={user?.id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <td className="px-6 py-4">{user?.name}</td>
+                <td className="px-6 py-4">{user?.email}</td>
+                <td className="px-6 py-4">{user?.phone}</td>
+                <td className="px-6 py-4">
+                  <button
+                    className="bg-gray-400  px-2 py-1 text-white rounded me-3"
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-gray-600 px-2 py-1 text-white rounded "
+                    onClick={() => handleDelete(user?.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboard;

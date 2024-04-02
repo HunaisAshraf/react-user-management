@@ -17,4 +17,19 @@ const requireSignIn = (req, res, next) => {
   }
 };
 
-module.exports = { requireSignIn };
+const isAdmin = (req, res, next) => {
+  try {
+    if (req.user.role === 1) {
+      next();
+    } else {
+      res.status(401).send({
+        success: false,
+        message: "unauthorised user",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { requireSignIn, isAdmin };

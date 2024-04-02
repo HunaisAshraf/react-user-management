@@ -6,10 +6,10 @@ type User = {
   email: string;
   phone: string;
   token: string;
+  img: string;
 };
 
 export type AuthData = {
   user?: User | null;
   admin?: User | null;
-  userImg?: string;
 };

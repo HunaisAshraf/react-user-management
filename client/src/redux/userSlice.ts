@@ -5,20 +5,15 @@ const initialState: AuthData = {
   user: localStorage.getItem("auth")
     ? JSON.parse(localStorage.getItem("auth") as string)
     : null,
-  userImg: localStorage.getItem("userImg")
-    ? (localStorage.getItem("userImg") as string)
-    : "",
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    login: (state, action) => {
+    updateUser: (state, action) => {
+      console.log(action.payload)
       state.user = action.payload;
-    },
-    updateImg: (state, action) => {
-      state.userImg = action.payload;
     },
     logout: (state) => {
       state.user = null;
@@ -27,5 +22,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, updateImg } = userSlice.actions;
+export const { updateUser, logout } = userSlice.actions;
 export default userSlice.reducer;

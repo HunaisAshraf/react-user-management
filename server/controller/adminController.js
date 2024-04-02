@@ -66,6 +66,42 @@ const adminLoginController = async (req, res) => {
   }
 };
 
+const getAllUsersController = async (req, res) => {
+  try {
+    const users = await db.pool.query(
+      "SELECT id,name,email,phone FROM users WHERE role <> 1 ;"
+    );
+
+    res.status(200).json({
+      users: users.rows,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteUserController = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    await db.pool.query("DELETE FROM image WHERE userid = $1;", [id]);
+    await db.pool.query("DELETE FROM users WHERE id = $1;", [id]);
+
+    return res.status(200).send({
+      success: true,
+      message: "user deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: true,
+      message: "user deleted failed",
+    });
+  }
+};
+
 module.exports = {
   adminLoginController,
+  getAllUsersController,
+  deleteUserController,
 };

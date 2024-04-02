@@ -7,10 +7,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const img = useSelector((state: RootState) => state.user.userImg);
   const dispatch = useDispatch();
-  console.log(img);
-
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -29,9 +26,9 @@ const Navbar = () => {
               <p>{user?.name}</p>
             </Link>
             <Link to="/profile">
-              {img ? (
+              {user?.img ? (
                 <img
-                  src={`http://localhost:3000/uploads/${img}`}
+                  src={`http://localhost:3000/uploads/${user?.img}`}
                   alt="user-img"
                   className="h-10 w-10 rounded-full"
                 />

@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { AuthData } from "../utils/type";
 
 const initialState: AuthData = {
-  admin: localStorage.getItem("auth")
-    ? JSON.parse(localStorage.getItem("auth") as string)
+  admin: localStorage.getItem("adminAuth")
+    ? JSON.parse(localStorage.getItem("adminAuth") as string)
     : null,
 };
 

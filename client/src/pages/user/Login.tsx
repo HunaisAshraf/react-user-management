@@ -4,7 +4,7 @@ import { API_URl } from "../../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/userSlice";
+import { updateUser } from "../../redux/userSlice";
 import { RootState } from "../../redux/store";
 import LoginForm from "../../components/LoginForm";
 
@@ -32,7 +32,7 @@ const Login = () => {
             token: data?.token,
           };
 
-          dispatch(login(user));
+          dispatch(updateUser(user));
           localStorage.setItem("auth", JSON.stringify(user));
           navigate("/home");
         } else {

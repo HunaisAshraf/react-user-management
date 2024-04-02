@@ -1,15 +1,18 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import LoginForm from "../../components/LoginForm";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { API_URl } from "../../utils/constants";
-import { login } from "../../redux/userSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { adminLogin } from "../../redux/adminSlice";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const admin = useSelector((state: RootState) => state.admin.admin);
 
   const dispatch = useDispatch();
 
@@ -29,8 +32,8 @@ const AdminLogin = () => {
             token: data?.token,
           };
 
-          dispatch(login(user));
-          localStorage.setItem("auth", JSON.stringify(user));
+          dispatch(adminLogin(user));
+          localStorage.setItem("adminAuth", JSON.stringify(user));
           navigate("/admin/dashboard");
         } else {
           toast.error(data.message);
@@ -41,6 +44,12 @@ const AdminLogin = () => {
         toast.error(error.response.data.message);
       });
   };
+
+  useEffect(() => {
+    if (admin?.token) {
+      navigate("/admin/dashboard");
+    }
+  }, []);
   return (
     <>
       <Toaster />
