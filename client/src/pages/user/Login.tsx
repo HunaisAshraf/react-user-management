@@ -2,11 +2,11 @@ import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { API_URl } from "../../utils/constants";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/userSlice";
 import { RootState } from "../../redux/store";
-import LoginForm from "../../components/LoginForm";
+import Input from "../../components/Input";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -20,6 +20,7 @@ const Login = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     axios
       .post(`${API_URl}user/login`, {
         email,
@@ -51,7 +52,40 @@ const Login = () => {
   return (
     <>
       <Toaster />
-      <LoginForm
+      <div className="min-h-[80vh] flex justify-center items-center">
+        <form
+          className="border-2 border-solid rounded p-3"
+          onSubmit={handleSubmit}
+        >
+          <h1 className="text-center text-3xl font-bold">Login</h1>
+          <Input
+            inputValue={email}
+            setInputValue={setEmail}
+            type="email"
+            placeHolder="Email"
+          />
+          <Input
+            inputValue={password}
+            setInputValue={setPassword}
+            type="password"
+            placeHolder="Password"
+          />
+          <div className="text-center py-3">
+            <button
+              type="submit"
+              className="bg-blue-700 text-white font-semibold py-2 px-3 rounded"
+            >
+              Submit
+            </button>
+          </div>
+
+          <Link to="/signup">
+            <p className="text-center text-blue-700">Create an account</p>
+          </Link>
+        </form>
+      </div>
+
+      {/* <LoginForm
         title="Login"
         email={email}
         setEmail={setEmail}
@@ -59,7 +93,7 @@ const Login = () => {
         setPassword={setPassword}
         handleSubmit={handleSubmit}
         signUpPage={true}
-      />
+      /> */}
     </>
   );
 };

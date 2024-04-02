@@ -1,5 +1,4 @@
 import { FormEvent, useEffect, useState } from "react";
-import LoginForm from "../../components/LoginForm";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { API_URl } from "../../utils/constants";
@@ -7,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { adminLogin } from "../../redux/adminSlice";
+import LoginForm from "../../components/LoginForm";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState<string>("");

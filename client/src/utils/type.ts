@@ -13,3 +13,11 @@ export type AuthData = {
   user?: User | null;
   admin?: User | null;
 };
+
+export type ErrorType = {
+  name?: string;
+  email?: string;
+  phone?: string;
+  password?: string;
+  confirmPassword?: string;
+};
