@@ -13,6 +13,10 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import ProtectedRoute from "./pages/user/ProtectedRoute.tsx";
 import AdminLogin from "./pages/admin/AdminLogin.tsx";
+import AdminRoute from "./pages/admin/AdminRoute.tsx";
+import EditUser from "./pages/admin/EditUser.tsx";
+import Admin from "./pages/admin/Admin.tsx";
+import AddUser from "./pages/admin/AddUser.tsx";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +60,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
+    element:<Admin />,
     children: [
       {
         path: "login",
@@ -63,7 +68,27 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <AdminDashboard />,
+        element: (
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "edit-user/:id",
+        element: (
+          <AdminRoute>
+            <EditUser />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "add-user",
+        element: (
+          <AdminRoute>
+            <AddUser />
+          </AdminRoute>
+        ),
       },
     ],
   },

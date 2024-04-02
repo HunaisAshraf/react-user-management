@@ -15,7 +15,7 @@ const getUserController = async (req, res) => {
   }
 };
 
-const userSignUpController = async (req, res) => {
+const addUserController = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
 
@@ -153,7 +153,7 @@ const getImgController = async (req, res) => {
 
 module.exports = {
   getUserController,
-  userSignUpController,
+  addUserController,
   userLoginController,
   addImageController,
   getImgController,

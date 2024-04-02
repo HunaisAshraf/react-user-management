@@ -9,9 +9,9 @@ type Input = {
 
 const Input = ({ type, inputValue, setInputValue, placeHolder }: Input) => {
   return (
-    <div className="my-2">
+    <div className="my-2 w-full">
       <input
-        className="border-2 border-solid p-2 outline-none rounded"
+        className="border-2 border-solid p-2 outline-none rounded w-full"
         type={type}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

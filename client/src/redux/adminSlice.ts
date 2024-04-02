@@ -17,7 +17,7 @@ const adminSlice = createSlice({
 
     adminLogout: (state) => {
       state.admin = null;
-      localStorage.removeItem("auth");
+      localStorage.removeItem("adminAuth");
     },
   },
 });

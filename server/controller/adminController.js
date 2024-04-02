@@ -58,6 +58,7 @@ const adminLoginController = async (req, res) => {
         name: user.rows[0].name,
         email: user.rows[0].email,
         phone: user.rows[0].phone,
+        img: user.rows[0].img,
       },
       token,
     });
@@ -84,7 +85,6 @@ const deleteUserController = async (req, res) => {
   try {
     const id = Number(req.params.id);
 
-    await db.pool.query("DELETE FROM image WHERE userid = $1;", [id]);
     await db.pool.query("DELETE FROM users WHERE id = $1;", [id]);
 
     return res.status(200).send({
@@ -100,8 +100,56 @@ const deleteUserController = async (req, res) => {
   }
 };
 
+const getUserDetailsController = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const user = await db.pool.query("SELECT * FROM users WHERE id = $1;", [
+      id,
+    ]);
+
+    user.rows[0].password = undefined;
+    user.rows[0].role = undefined;
+
+    return res.json({ success: true, user: user.rows[0] });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const editUserDetailsController = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { name, email, phone } = req.body;
+
+    const exist = await db.pool.query("SELECT * FROM users WHERE email = $1 AND id <> $2", [
+      email,id
+    ]);
+    if (exist.rowCount) {
+      return res.send({
+        success: false,
+        message: "user already exist",
+      });
+    }
+
+    let user = await db.pool.query(
+      "UPDATE users SET name = $1, email = $2, phone = $3 where id = $4;",
+      [name, email, phone,id]
+    );
+
+    return res.send({
+      success: true,
+      message: "user update successfull",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   adminLoginController,
   getAllUsersController,
   deleteUserController,
+  getUserDetailsController,
+  editUserDetailsController,
 };
