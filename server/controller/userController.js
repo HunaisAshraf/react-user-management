@@ -62,7 +62,7 @@ const userLoginController = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await db.pool.query("SELECT * FROM users where email = $1;", [
+    const user = await db.pool.query("SELECT * FROM users WHERE email = $1;", [
       email,
     ]);
 

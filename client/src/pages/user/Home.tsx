@@ -1,11 +1,16 @@
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../redux/store";
-// import axios from "axios";
-// import { API_URl } from "../../utils/constants";
-// import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Home = () => {
-  return <div>Home</div>;
+  const user = useSelector((state: RootState) => state.user.user);
+
+  return (
+    <div className="h-[80vh] flex justify-center items-center">
+      <h1 className="font-semibold text-5xl">
+        Welcome <span className="text-blue-600">{user?.name}</span>
+      </h1>
+    </div>
+  );
 };
 
 export default Home;
